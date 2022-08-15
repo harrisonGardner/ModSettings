@@ -1,0 +1,19 @@
+﻿  GameFunctions.cpp
+  Internals.cpp
+C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\ProjectFiles\Source\Mod.cpp(61,62): warning C4244: 'argument': conversion from 'int64_t' to 'float', possible loss of data
+C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\ProjectFiles\Source\Mod.cpp(61,52): warning C4244: 'argument': conversion from 'int64_t' to 'float', possible loss of data
+C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\ProjectFiles\Source\Mod.cpp(61,96): warning C4244: 'argument': conversion from 'int64_t' to 'float', possible loss of data
+C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\ProjectFiles\Source\Mod.cpp(61,86): warning C4244: 'argument': conversion from 'int64_t' to 'float', possible loss of data
+C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\ProjectFiles\Source\Mod.cpp(61,113): warning C4244: 'argument': conversion from 'float' to 'uint16_t', possible loss of data
+C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\ProjectFiles\Source\Mod.cpp(61,79): warning C4244: 'argument': conversion from 'float' to 'int64_t', possible loss of data
+C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\ProjectFiles\Source\Mod.cpp(61,45): warning C4244: 'argument': conversion from 'float' to 'int64_t', possible loss of data
+C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\ProjectFiles\Source\Mod.cpp(121,73): warning C4244: 'argument': conversion from 'float' to 'int64_t', possible loss of data
+     Creating library C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\x64\Release\Code.lib and object C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\x64\Release\Code.exp
+  Generating code
+  16 of 400 functions ( 4.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  Code.vcxproj -> C:\Users\bacon\Desktop\ModSettingsLibrary\ProjectFolder\x64\Release\Code.dll
+          1 file(s) copied.
+  Press any key to continue . . . 
