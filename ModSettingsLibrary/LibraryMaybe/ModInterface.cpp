@@ -14,24 +14,11 @@ class Sign
 {
 	public:
 		wString text;
-		wString uniqueName;
 		CoordinateInCentimeters position;
 		bool display = false;
-
 		HANDLE hintTextHandle;
-
-		Sign(wString text = L"Text not set", wString uniqueName = L"UniqueNameNotSet") {
+		Sign(wString text = L"Text not set") {
 			this->text = text;
-			this->uniqueName = uniqueName;
-
-			ScopedSharedMemoryHandle thisSignHandle = GetSharedMemoryPointer(this->uniqueName, true, false);
-			thisSignHandle.Pointer = this;
-
-			if (GetSharedMemoryPointer(L"ModList", false, true).Valid)
-			{
-				ScopedSharedMemoryHandle modList = GetSharedMemoryPointer(L"ModList", false, true);
-				((void (*)(wString))modList.Pointer)(this->uniqueName);
-			}
 		}
 
 	public:float hitboxSize = 20;
@@ -50,10 +37,7 @@ class MainSign : public Sign
 {
 	public:
 		bool value = false;
-		MainSign(wString text, wString uniqueName, bool value = false) : Sign(text, uniqueName)
-		{
-			this->value = value;
-		}
+		MainSign(wString text) : Sign(text) {}
 		bool GetValue() { return value; }
 		bool SetValue(bool value) { this->value = value; }
 };
@@ -62,7 +46,7 @@ class ToggleSign: public Sign
 {
 	public:
 		bool value = false;
-		ToggleSign(wString text, wString uniqueName, bool value = false) : Sign(text, uniqueName)
+		ToggleSign(wString text, bool value = false) : Sign(text)
 		{
 			this->value = value;
 		}
@@ -74,7 +58,7 @@ class FloatSign : public Sign
 {
 	public:
 		float value;
-		FloatSign(wString text, wString uniqueName, float value = 0) : Sign(text, uniqueName)
+		FloatSign(wString text, float value = 0) : Sign(text)
 		{
 			this->value = value;
 		}
@@ -86,7 +70,7 @@ class IntSign : public Sign
 {
 	public:
 		int value;
-		IntSign(wString text, wString uniqueName, int value = 0) : Sign(text, uniqueName)
+		IntSign(wString text, int value = 0) : Sign(text)
 		{
 			this->value = value;
 		}
@@ -100,10 +84,13 @@ class ModMenuGroup
 		Sign main;
 		std::list<Sign> options;
 		int optionAmountCap = 10;
+		ModMenuGroup() {};
 		ModMenuGroup(Sign modName)
 		{
 			this->main = modName;
+			Log(L"Mod Menu Try Set: " + main.text);
 			ScopedSharedMemoryHandle modMenus = GetSharedMemoryPointer(L"ModMenus", false, true);
+			Log(L"Mod Menu Attempted: " + main.text);
 			((void (*)(ModMenuGroup *))modMenus.Pointer)(this);
 		}
 		void AddOption(Sign option)

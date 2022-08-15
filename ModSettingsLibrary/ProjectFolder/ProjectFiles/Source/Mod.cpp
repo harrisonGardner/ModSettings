@@ -63,7 +63,7 @@ CoordinateInCentimeters CentimeterAxisDistances(CoordinateInCentimeters coord1, 
 
 bool HandsToHead(CoordinateInCentimeters handLeft, CoordinateInCentimeters handRight, CoordinateInCentimeters headPos)
 {
-	float hitboxSize = 10;
+	float hitboxSize = 20;
 	
 	return (handLeft.X < (headPos.X + hitboxSize) && handLeft.X > (headPos.X - hitboxSize)
 		&& handLeft.Y < (headPos.Y + hitboxSize) && handLeft.Y >(headPos.Y - hitboxSize)
@@ -81,8 +81,7 @@ bool menuOpenStart = false;
 bool modSignHandRemoved = true;
 
 //Test Create Menu
-Sign closeMenu = ToggleSign(L"Close Menu", L"menuClose");
-ModMenuGroup mainMenuItems = ModMenuGroup(closeMenu);
+Sign closeMenu = ToggleSign(L"Close Menu");
 
 std::list<ModMenuGroup> modMenus;
 std::list<ModMenuGroup>::iterator modMenusIt;
@@ -112,30 +111,22 @@ void Event_Tick()
 	{
 		if (HandsToHead(handLeftPos, handRightPos, headPos))
 		{
+			PlayHapticFeedbackOnHand(true, 0.1f, 20, 0.25f);
 			menuOpen = true;
 			closeMenu.display = true;
-			closeMenu.position = CoordinateInCentimeters(0, 0, 20) + (headDir * 35);
+			closeMenu.position = headPos + CoordinateInCentimeters(0, 0, 20) + (headDir * 35);
+			closeMenu.hintTextHandle = SpawnHintTextAdvanced(closeMenu.position, closeMenu.text, -1, 0.5f);
 			for (modMenusIt = modMenus.begin(); modMenusIt != modMenus.end(); modMenusIt++)
 			{
 				modMenusIt->main.display = true;
-				modMenusIt->main.position = CoordinateInCentimeters(modMenus.size() * modMenusIt->main.hitboxSize, 0, 0) + (headDir * 35);
+				modMenusIt->main.position = headPos + CoordinateInCentimeters(modMenus.size() * modMenusIt->main.hitboxSize, 0, 0) + (headDir * 35);
+				modMenusIt->main.hintTextHandle = SpawnHintTextAdvanced(modMenusIt->main.position, modMenusIt->main.text, -1, 0.5f);
 			}
 		}
 	}
 	if (menuOpen)
 	{
-		if (closeMenu.display)
-		{
-			closeMenu.hintTextHandle = SpawnHintTextAdvanced(closeMenu.position, closeMenu.text, -1, 0.5f);
-		}
-		for (modMenusIt = modMenus.begin(); modMenusIt != modMenus.end(); modMenusIt++)
-		{
-			if (modMenusIt->main.display)
-			{
-				modMenusIt->main.hintTextHandle = SpawnHintTextAdvanced(modMenusIt->main.position, modMenusIt->main.text, -1, 0.5f);
-			}
-		}
-
+		
 		if (closeMenu.CheckCollision(handLeftPos, handRightPos))
 		{
 			CloseMenu();
@@ -147,6 +138,7 @@ void Event_Tick()
 
 void SetModMenus(ModMenuGroup mod)
 {
+	Log(mod.main.text + L" SetModMenus Attempt: (Mod Menus)");
 	modMenus.push_back(mod);
 	Log(mod.main.text + L" was set : (Mod Menus)");
 }
@@ -154,10 +146,13 @@ void SetModMenus(ModMenuGroup mod)
 // Run once when the world is loaded
 void Event_OnLoad(bool CreatedNewWorld)
 {
+	Log(L"ModSettings Load start (Mod Menus)");
 	ScopedSharedMemoryHandle setModMenusHandle = GetSharedMemoryPointer(L"ModMenus", true, false);
+	Log(L"ModSettings Mod Menus Shared Memory Handle Created (Mod Menus)");
 	setModMenusHandle.Pointer = SetModMenus;
+	Log(L"ModSettings Mod Menus Pointer Set (Mod Menus)");
 
-	/*SetModMenus(mainMenuItems);*/
+	ModMenuGroup mainMenu = ModMenuGroup(ToggleSign(L"Close Menu"));
 }
 
 // Run once when the world is exited
